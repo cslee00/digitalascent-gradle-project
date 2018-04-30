@@ -9,9 +9,15 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.logging.LogLevel;
 import org.gradle.api.tasks.TaskCollection;
 import org.gradle.api.tasks.compile.CompileOptions;
 import org.gradle.api.tasks.compile.JavaCompile;
+import org.gradle.api.tasks.javadoc.Javadoc;
+import org.gradle.external.javadoc.JavadocMemberLevel;
+import org.gradle.external.javadoc.MinimalJavadocOptions;
+import org.gradle.external.javadoc.StandardJavadocDocletOptions;
+import pl.allegro.tech.build.axion.release.domain.VersionConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +37,41 @@ public class ProjectPlugin implements Plugin<Project> {
         registerPublishArtifactsTask(project);
         configureNebulaResolutionRules(project);
         configureJavaCompile(project);
+        configureJavaDoc(project);
         configureBintray(project);
+        configureAxiom(project);
+    }
+
+    private void configureJavaDoc(Project project) {
+        final Action<Javadoc> action = task -> {
+
+            task.setDescription("Generates project-level javadoc for use in -javadoc jar");
+            StandardJavadocDocletOptions options = (StandardJavadocDocletOptions) task.getOptions();
+
+            options.setMemberLevel(JavadocMemberLevel.PROTECTED);
+            options.setAuthor(false);
+            options.setHeader(project.getName());
+
+            options.links("http://docs.oracle.com/javase/8/docs/api/","http://docs.oracle.com/javaee/7/api/");
+
+            options.addStringOption("Xdoclint:none", "-quiet");
+
+            // Suppress warnings due to cross-module @see and @link references.
+            project.getLogging().captureStandardError(LogLevel.INFO);
+            project.getLogging().captureStandardOutput(LogLevel.INFO);
+
+        };
+
+        final TaskCollection<Javadoc> javadocTasks = project.getTasks().withType(Javadoc.class);
+        javadocTasks.all(action);
+    }
+
+    private void configureAxiom(Project project) {
+        VersionConfig versionConfig = project.getExtensions().getByType(VersionConfig.class);
+
+        versionConfig.setLocalOnly(true);
+        versionConfig.getTag().setPrefix("release");
+        versionConfig.getTag().setVersionSeparator("/");
     }
 
     private void configureBintray(Project project) {
