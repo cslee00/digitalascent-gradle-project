@@ -102,7 +102,7 @@ public class ProjectPlugin implements Plugin<Project> {
             lintOpts.add("serial");
             lintOpts.add("varargs");
             lintOpts.add("cast");
-            lintOpts.add("classfile");
+            lintOpts.add("-classfile");
             lintOpts.add("dep-ann");
             lintOpts.add("divzero");
             lintOpts.add("empty");
