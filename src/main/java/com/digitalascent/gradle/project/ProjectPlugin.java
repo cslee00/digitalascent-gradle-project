@@ -15,11 +15,9 @@ import org.gradle.api.tasks.compile.CompileOptions;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.javadoc.Javadoc;
 import org.gradle.external.javadoc.JavadocMemberLevel;
-import org.gradle.external.javadoc.MinimalJavadocOptions;
 import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 import pl.allegro.tech.build.axion.release.domain.VersionConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,6 +30,7 @@ public class ProjectPlugin implements Plugin<Project> {
         project.getPluginManager().apply(nebula.plugin.responsible.NebulaResponsiblePlugin.class);
         project.getPluginManager().apply(nebula.plugin.bintray.BintrayPlugin.class);
         project.getPluginManager().apply(nebula.plugin.resolutionrules.ResolutionRulesPlugin.class);
+        project.getPluginManager().apply(nebula.plugin.publishing.maven.license.MavenApacheLicensePlugin.class);
         project.getPluginManager().apply(pl.allegro.tech.build.axion.release.ReleasePlugin.class);
 
         registerPublishArtifactsTask(project);
