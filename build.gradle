@@ -15,9 +15,10 @@ dependencies {
     compile "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
     compile "com.netflix.nebula:gradle-resolution-rules-plugin:5.2.2"
     compile "pl.allegro.tech.build:axion-release-plugin:1.9.2"
+    compile "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.5"
 }
 
-version = "0.5.0"
+version = "0.5.1"
 group = "com.digitalascent"
 
 pluginBundle {
