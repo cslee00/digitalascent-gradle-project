@@ -10,15 +10,14 @@ repositories {
 
 dependencies {
     compile gradleApi()
-    compile "gradle.plugin.com.digitalascent:digitalascent-gradle-errorprone:1.0"
-    compile "com.netflix.nebula:nebula-project-plugin:4.0.1"
-    compile "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
-    compile "com.netflix.nebula:gradle-resolution-rules-plugin:5.2.2"
-    compile "pl.allegro.tech.build:axion-release-plugin:1.9.2"
-    compile "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.5"
+    compile "com.netflix.nebula:nebula-project-plugin:6.0.0"
+    compile "com.netflix.nebula:nebula-bintray-plugin:5.0.0"
+    compile "com.netflix.nebula:gradle-resolution-rules-plugin:7.0.8"
+    compile "pl.allegro.tech.build:axion-release-plugin:1.10.0"
+    compile "org.jfrog.buildinfo:build-info-extractor-gradle:4.9.3"
 }
 
-version = "0.5.1"
+version = "0.7.7"
 group = "com.digitalascent"
 
 pluginBundle {

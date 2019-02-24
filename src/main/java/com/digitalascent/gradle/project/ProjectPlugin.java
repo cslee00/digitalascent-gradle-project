@@ -1,6 +1,5 @@
 package com.digitalascent.gradle.project;
 
-import com.digitalascent.gradle.errorprone.ErrorPronePlugin;
 import com.jfrog.bintray.gradle.BintrayExtension;
 import nebula.plugin.resolutionrules.NebulaResolutionRulesExtension;
 import org.gradle.api.Action;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 public class ProjectPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
-        project.getPluginManager().apply(ErrorPronePlugin.class);
+//        project.getPluginManager().apply(ErrorPronePlugin.class);
         project.getPluginManager().apply(nebula.plugin.responsible.NebulaResponsiblePlugin.class);
         project.getPluginManager().apply(nebula.plugin.bintray.BintrayPlugin.class);
         project.getPluginManager().apply(nebula.plugin.resolutionrules.ResolutionRulesPlugin.class);
@@ -34,11 +33,11 @@ public class ProjectPlugin implements Plugin<Project> {
         project.getPluginManager().apply(pl.allegro.tech.build.axion.release.ReleasePlugin.class);
 
         registerPublishArtifactsTask(project);
-        configureNebulaResolutionRules(project);
+//        configureNebulaResolutionRules(project);
         configureJavaCompile(project);
-        configureJavaDoc(project);
-        configureBintray(project);
-        configureAxiom(project);
+//        configureJavaDoc(project);
+//        configureBintray(project);
+//        configureAxiom(project);
     }
 
     private void configureJavaDoc(Project project) {
@@ -119,15 +118,19 @@ public class ProjectPlugin implements Plugin<Project> {
             lintOpts.add("-options");
 
             List<String> compilerArgs = lintOpts.stream().map(opt -> "-Xlint:" + opt).collect(Collectors.toList());
-            compilerArgs.add("-Werror");
+          //  compilerArgs.add("-Werror");
 
             project.getLogger().lifecycle("Java compile task {} - added compiler args {}", task.getName(), compilerArgs);
 
             options.getCompilerArgs().addAll(compilerArgs);
         };
 
-        final TaskCollection<JavaCompile> javaCompileTasks = project.getTasks().withType(JavaCompile.class);
-        javaCompileTasks.all(action);
+        project.afterEvaluate(project1 -> {
+            final TaskCollection<JavaCompile> javaCompileTasks = project1.getTasks().withType(JavaCompile.class);
+            javaCompileTasks.all(action);
+        });
+
+
     }
 
     private void registerPublishArtifactsTask(Project project) {
@@ -163,7 +166,7 @@ public class ProjectPlugin implements Plugin<Project> {
 
     private void configureNebulaResolutionRules(Project project) {
         Configuration resolutionRulesConfiguration = project.getRootProject().getConfigurations().getAt("resolutionRules");
-        resolutionRulesConfiguration.getDependencies().add(project.getDependencies().create("com.netflix.nebula:gradle-resolution-rules:0.52.0"));
+        resolutionRulesConfiguration.getDependencies().add(project.getDependencies().create("com.netflix.nebula:gradle-resolution-rules:0.58.0"));
 
         NebulaResolutionRulesExtension resolutionRulesExtension = (NebulaResolutionRulesExtension) project.getExtensions().getByName("nebulaResolutionRules");
         resolutionRulesExtension.getOptional().add("slf4j-bridge");
