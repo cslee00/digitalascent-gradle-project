@@ -35,9 +35,9 @@ public class ProjectPlugin implements Plugin<Project> {
         registerPublishArtifactsTask(project);
 //        configureNebulaResolutionRules(project);
         configureJavaCompile(project);
-//        configureJavaDoc(project);
-//        configureBintray(project);
-//        configureAxiom(project);
+        configureJavaDoc(project);
+        configureBintray(project);
+        configureAxiom(project);
     }
 
     private void configureJavaDoc(Project project) {
